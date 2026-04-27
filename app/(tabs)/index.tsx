@@ -1,172 +1,115 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
+
+// Imagen de fondo
+const BG_IMAGE = {
+  uri: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&q=80",
+};
 
 export default function HomeScreen() {
   return (
-    <ScrollView style={styles.scrollView}>
-      {/* CONTAINER — equivalente a Container de Flutter */}
-      <View style={styles.container}>
-        <Text style={styles.titulo}>🎬 Catálogo de Películas</Text>
-      </View>
+    // ImageBackground — equivalente a Container con imagen de fondo en Flutter
+    <ImageBackground
+      source={BG_IMAGE}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      {/* Overlay oscuro sobre la imagen */}
+      <View style={styles.overlay}>
+        {/* Column principal — centra todo el contenido */}
+        <View style={styles.column}>
+          {/* Nombre de la app */}
+          <Text style={styles.appName}>FirstMobileApp</Text>
 
-      {/* COLUMN — equivalente a Column de Flutter (flexDirection: 'column') */}
-      <View style={styles.column}>
-        <Text style={styles.sectionTitle}>Column (elementos apilados)</Text>
-        <Text style={styles.item}>🎥 Inception</Text>
-        <Text style={styles.item}>🎥 Titanic</Text>
-        <Text style={styles.item}>🎥 The Matrix</Text>
-      </View>
+          {/* Línea decorativa */}
+          <View style={styles.divider} />
 
-      {/* ROW — equivalente a Row de Flutter (flexDirection: 'row') */}
-      <View style={styles.row}>
-        <Text style={styles.badge}>2010</Text>
-        <Text style={styles.movieTitle}>Inception</Text>
-        <Text style={styles.badge}>⭐ 8.8</Text>
-      </View>
+          {/* Mensaje de bienvenida */}
+          <Text style={styles.welcome}>¡Bienvenido!</Text>
+          <Text style={styles.subtitle}>
+            Tu catálogo de películas favoritas en un solo lugar. Descubre,
+            explora y guarda tus títulos preferidos.
+          </Text>
 
-      {/* STACK — equivalente a Stack de Flutter (posición absoluta) */}
-      <View style={styles.stack}>
-        {/* Capa base */}
-        <View style={styles.stackBase} />
-        {/* Capa encima */}
-        <Text style={styles.stackText}>Stack: texto sobre fondo</Text>
+          {/* Row con íconos decorativos */}
+          <View style={styles.row}>
+            <Text style={styles.icon}>🎬</Text>
+            <Text style={styles.icon}>🎥</Text>
+            <Text style={styles.icon}>🍿</Text>
+          </View>
+        </View>
       </View>
-
-      {/* TEXT con variantes */}
-      <View style={styles.textSection}>
-        <Text style={styles.textH1}>Título H1</Text>
-        <Text style={styles.textH2}>Subtítulo H2</Text>
-        <Text style={styles.textBody}>
-          Texto de cuerpo: Una historia épica que demuestra el uso del widget
-          Text con distintos estilos.
-        </Text>
-        <Text style={styles.textCaption}>Caption / texto pequeño</Text>
-      </View>
-    </ScrollView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  // SCROLL
-  scrollView: {
+  // ImageBackground ocupa toda la pantalla
+  background: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
   },
 
-  // CONTAINER
-  container: {
-    backgroundColor: "#1a1a2e",
-    padding: 24,
+  // Overlay oscuro semitransparente sobre la imagen
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(10, 10, 30, 0.75)",
+    justifyContent: "center",
     alignItems: "center",
-    marginBottom: 16,
-  },
-  titulo: {
-    color: "#fff",
-    fontSize: 22,
-    fontWeight: "bold",
+    padding: 24,
   },
 
-  // COLUMN
+  // Column — contenedor principal centrado
   column: {
     flexDirection: "column",
-    backgroundColor: "#fff",
-    padding: 16,
-    margin: 12,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    color: "#888",
-    marginBottom: 8,
-  },
-  item: {
-    fontSize: 16,
-    paddingVertical: 4,
-    color: "#333",
+    alignItems: "center",
+    width: "100%",
   },
 
-  // ROW
+  // Nombre de la app
+  appName: {
+    fontSize: 36,
+    fontWeight: "bold",
+    color: "#ffffff",
+    letterSpacing: 2,
+    textAlign: "center",
+    marginBottom: 12,
+  },
+
+  // Línea decorativa
+  divider: {
+    width: 60,
+    height: 3,
+    backgroundColor: "#6366f1",
+    borderRadius: 2,
+    marginBottom: 24,
+  },
+
+  // Texto de bienvenida
+  welcome: {
+    fontSize: 24,
+    fontWeight: "600",
+    color: "#e0e0ff",
+    marginBottom: 12,
+    textAlign: "center",
+  },
+
+  // Descripción
+  subtitle: {
+    fontSize: 15,
+    color: "#b0b0cc",
+    textAlign: "center",
+    lineHeight: 24,
+    marginBottom: 32,
+    paddingHorizontal: 16,
+  },
+
+  // Row — íconos decorativos en línea horizontal
   row: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 16,
-    margin: 12,
-    borderRadius: 8,
-    elevation: 3,
-  },
-  badge: {
-    backgroundColor: "#e0e7ff",
-    color: "#3730a3",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-    fontSize: 12,
-    fontWeight: "600",
-  },
-  movieTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#1a1a2e",
+    justifyContent: "center",
+    gap: 20,
   },
 
-  // STACK
-  stack: {
-    position: "relative",
-    height: 100,
-    margin: 12,
-    borderRadius: 8,
-    overflow: "hidden",
-  },
-  stackBase: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "#1a1a2e",
-  },
-  stackText: {
-    position: "absolute",
-    bottom: 12,
-    left: 12,
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-
-  // TEXT
-  textSection: {
-    backgroundColor: "#fff",
-    padding: 16,
-    margin: 12,
-    borderRadius: 8,
-    elevation: 3,
-  },
-  textH1: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#1a1a2e",
-    marginBottom: 4,
-  },
-  textH2: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#333",
-    marginBottom: 8,
-  },
-  textBody: {
-    fontSize: 14,
-    color: "#555",
-    lineHeight: 22,
-    marginBottom: 8,
-  },
-  textCaption: {
-    fontSize: 12,
-    color: "#999",
+  icon: {
+    fontSize: 36,
   },
 });
