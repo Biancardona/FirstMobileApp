@@ -2,7 +2,7 @@ import { ImageBackground, StyleSheet, Text, View } from "react-native";
 
 // Imagen de fondo
 const BG_IMAGE = {
-  uri: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=800&q=80",
+  uri: "https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?w=800&q=80",
 };
 
 export default function HomeScreen() {
@@ -17,6 +17,8 @@ export default function HomeScreen() {
       <View style={styles.overlay}>
         {/* Column principal — centra todo el contenido */}
         <View style={styles.column}>
+          <Text style={styles.pokeball}>🔴</Text>
+
           {/* Nombre de la app */}
           <Text style={styles.appName}>FirstMobileApp</Text>
 
@@ -24,18 +26,21 @@ export default function HomeScreen() {
           <View style={styles.divider} />
 
           {/* Mensaje de bienvenida */}
-          <Text style={styles.welcome}>¡Bienvenido!</Text>
+          <Text style={styles.welcome}>¡Bienvenido Entrenador!</Text>
           <Text style={styles.subtitle}>
-            Tu catálogo de películas favoritas en un solo lugar. Descubre,
-            explora y guarda tus títulos preferidos.
+            Explora la Pokédex y descubre información sobre tus Pokémon
+            favoritos. ¡Atrapa, aprende y conviértete en el mejor!
           </Text>
 
           {/* Row con íconos decorativos */}
           <View style={styles.row}>
-            <Text style={styles.icon}>🎬</Text>
-            <Text style={styles.icon}>🎥</Text>
-            <Text style={styles.icon}>🍿</Text>
+            <Text style={styles.icon}>⚡</Text>
+            <Text style={styles.icon}>🔴</Text>
+            <Text style={styles.icon}>🌊</Text>
+            <Text style={styles.icon}>🔥</Text>
+            <Text style={styles.icon}>🌿</Text>
           </View>
+          <Text style={styles.motto}>"¡Hazte con todos!"</Text>
         </View>
       </View>
     </ImageBackground>
@@ -43,73 +48,89 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  // ImageBackground ocupa toda la pantalla
   background: {
     flex: 1,
   },
 
-  // Overlay oscuro semitransparente sobre la imagen
+  // Overlay rojo oscuro temático Pokémon
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(10, 10, 30, 0.75)",
+    backgroundColor: "rgba(180, 10, 10, 0.72)",
     justifyContent: "center",
     alignItems: "center",
     padding: 24,
   },
 
-  // Column — contenedor principal centrado
   column: {
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
   },
 
-  // Nombre de la app
+  // Pokéball grande decorativa
+  pokeball: {
+    fontSize: 72,
+    marginBottom: 16,
+  },
+
   appName: {
-    fontSize: 36,
+    fontSize: 34,
     fontWeight: "bold",
     color: "#ffffff",
     letterSpacing: 2,
     textAlign: "center",
     marginBottom: 12,
+    textShadowColor: "rgba(0,0,0,0.5)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 4,
   },
 
-  // Línea decorativa
+  // Línea decorativa amarilla — color Pikachu
   divider: {
     width: 60,
     height: 3,
-    backgroundColor: "#6366f1",
+    backgroundColor: "#FFD700",
     borderRadius: 2,
     marginBottom: 24,
   },
 
-  // Texto de bienvenida
   welcome: {
-    fontSize: 24,
-    fontWeight: "600",
-    color: "#e0e0ff",
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#FFD700",
     marginBottom: 12,
     textAlign: "center",
+    textShadowColor: "rgba(0,0,0,0.5)",
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
 
-  // Descripción
   subtitle: {
     fontSize: 15,
-    color: "#b0b0cc",
+    color: "#ffe0e0",
     textAlign: "center",
     lineHeight: 24,
-    marginBottom: 32,
+    marginBottom: 28,
     paddingHorizontal: 16,
   },
 
-  // Row — íconos decorativos en línea horizontal
   row: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 20,
+    gap: 16,
+    marginBottom: 24,
   },
 
   icon: {
-    fontSize: 36,
+    fontSize: 32,
+  },
+
+  motto: {
+    fontSize: 16,
+    color: "#FFD700",
+    fontStyle: "italic",
+    fontWeight: "600",
+    textAlign: "center",
+    letterSpacing: 1,
   },
 });
