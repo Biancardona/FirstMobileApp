@@ -1,136 +1,134 @@
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
-
-// Imagen de fondo
-const BG_IMAGE = {
-  uri: "https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?w=800&q=80",
-};
+import { getMovies, MCUMovie } from "@/services/marvelService";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function HomeScreen() {
-  return (
-    // ImageBackground — equivalente a Container con imagen de fondo en Flutter
-    <ImageBackground
-      source={BG_IMAGE}
-      style={styles.background}
-      resizeMode="cover"
+  const [movies, setMovies] = useState<MCUMovie[]>([]);
+  const [filtered, setFiltered] = useState<MCUMovie[]>([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+  useEffect(() => {
+    getMovies()
+      .then((data) => {
+        setMovies(data);
+        setFiltered(data);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleSearch = (text: string) => {
+    setSearch(text);
+    setFiltered(
+      movies.filter((m) => m.title.toLowerCase().includes(text.toLowerCase())),
+    );
+  };
+
+  const renderMovie = ({ item }: { item: MCUMovie }) => (
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => router.push(`/movie/${item.id}`)}
     >
-      {/* Overlay oscuro sobre la imagen */}
-      <View style={styles.overlay}>
-        {/* Column principal — centra todo el contenido */}
-        <View style={styles.column}>
-          <Text style={styles.pokeball}>🔴</Text>
-
-          {/* Nombre de la app */}
-          <Text style={styles.appName}>FirstMobileApp</Text>
-
-          {/* Línea decorativa */}
-          <View style={styles.divider} />
-
-          {/* Mensaje de bienvenida */}
-          <Text style={styles.welcome}>¡Bienvenido Entrenador!</Text>
-          <Text style={styles.subtitle}>
-            Explora la Pokédex y descubre información sobre tus Pokémon
-            favoritos. ¡Atrapa, aprende y conviértete en el mejor!
-          </Text>
-
-          {/* Row con íconos decorativos */}
-          <View style={styles.row}>
-            <Text style={styles.icon}>⚡</Text>
-            <Text style={styles.icon}>🔴</Text>
-            <Text style={styles.icon}>🌊</Text>
-            <Text style={styles.icon}>🔥</Text>
-            <Text style={styles.icon}>🌿</Text>
-          </View>
-          <Text style={styles.motto}>"¡Hazte con todos!"</Text>
-        </View>
+      <Image source={{ uri: item.cover_url }} style={styles.poster} />
+      <View style={styles.info}>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.phase}>
+          Fase {item.phase} · {item.saga}
+        </Text>
+        <Text style={styles.date}>
+          {new Date(item.release_date).getFullYear()}
+        </Text>
+        <Text style={styles.overview} numberOfLines={2}>
+          {item.overview}
+        </Text>
       </View>
-    </ImageBackground>
+    </TouchableOpacity>
+  );
+
+  if (loading) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color="#E62429" />
+      </View>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#1A1A2E" />
+
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>🎬 Marvel Movies</Text>
+        <Text style={styles.headerSub}>{filtered.length} películas</Text>
+      </View>
+
+      <TextInput
+        style={styles.search}
+        placeholder="Buscar película..."
+        placeholderTextColor="#888"
+        value={search}
+        onChangeText={handleSearch}
+      />
+
+      <FlatList
+        data={filtered}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderMovie}
+        contentContainerStyle={{ paddingBottom: 20 }}
+        showsVerticalScrollIndicator={false}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
+  container: { flex: 1, backgroundColor: "#1A1A2E" },
+  center: {
     flex: 1,
-  },
-
-  // Overlay rojo oscuro temático Pokémon
-  overlay: {
-    flex: 1,
-    backgroundColor: "rgba(180, 10, 10, 0.72)",
     justifyContent: "center",
     alignItems: "center",
-    padding: 24,
+    backgroundColor: "#1A1A2E",
   },
-
-  column: {
-    flexDirection: "column",
-    alignItems: "center",
-    width: "100%",
-  },
-
-  // Pokéball grande decorativa
-  pokeball: {
-    fontSize: 72,
-    marginBottom: 16,
-  },
-
-  appName: {
-    fontSize: 34,
-    fontWeight: "bold",
-    color: "#ffffff",
-    letterSpacing: 2,
-    textAlign: "center",
-    marginBottom: 12,
-    textShadowColor: "rgba(0,0,0,0.5)",
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 4,
-  },
-
-  // Línea decorativa amarilla — color Pikachu
-  divider: {
-    width: 60,
-    height: 3,
-    backgroundColor: "#FFD700",
-    borderRadius: 2,
-    marginBottom: 24,
-  },
-
-  welcome: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#FFD700",
-    marginBottom: 12,
-    textAlign: "center",
-    textShadowColor: "rgba(0,0,0,0.5)",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
-  },
-
-  subtitle: {
+  header: { padding: 16, paddingBottom: 8 },
+  headerTitle: { fontSize: 26, fontWeight: "bold", color: "#E62429" },
+  headerSub: { fontSize: 13, color: "#aaa", marginTop: 2 },
+  search: {
+    margin: 12,
+    backgroundColor: "#16213E",
+    borderRadius: 10,
+    padding: 12,
+    color: "#fff",
     fontSize: 15,
-    color: "#ffe0e0",
-    textAlign: "center",
-    lineHeight: 24,
-    marginBottom: 28,
-    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: "#E62429",
   },
-
-  row: {
+  card: {
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 16,
-    marginBottom: 24,
+    backgroundColor: "#16213E",
+    marginHorizontal: 12,
+    marginVertical: 6,
+    borderRadius: 12,
+    overflow: "hidden",
+    elevation: 4,
   },
-
-  icon: {
-    fontSize: 32,
-  },
-
-  motto: {
-    fontSize: 16,
-    color: "#FFD700",
-    fontStyle: "italic",
-    fontWeight: "600",
-    textAlign: "center",
-    letterSpacing: 1,
-  },
+  poster: { width: 90, height: 130 },
+  info: { flex: 1, padding: 10, justifyContent: "center" },
+  title: { fontSize: 16, fontWeight: "bold", color: "#fff", marginBottom: 4 },
+  phase: { fontSize: 12, color: "#E62429", marginBottom: 2 },
+  date: { fontSize: 12, color: "#aaa", marginBottom: 4 },
+  overview: { fontSize: 12, color: "#ccc", lineHeight: 16 },
 });
