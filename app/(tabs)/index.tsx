@@ -6,7 +6,6 @@ import {
   FlatList,
   Image,
   ImageBackground,
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   Text,
@@ -14,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // Peliculas destacadas por ID (las más icónicas del MCU)
 const FEATURED_IDS = [1, 3, 12, 14, 18, 23]; // Iron Man, Avengers, Infinity War, Endgame...
